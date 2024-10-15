@@ -17,10 +17,14 @@
 
 set -e
 
-echo -e "Checking that pre-req softwares are installed..."
-curl -s https://raw.githubusercontent.com/kubestellar/kubestellar/v0.23.1/hack/check_pre_req.sh | bash -s -- -V kflex ocm helm kubectl docker kind
+export KUBESTELLAR_VERSION=0.24.0
+echo -e "KubeStellar Version: ${KUBESTELLAR_VERSION}"
 
-output=$(curl -s https://raw.githubusercontent.com/kubestellar/kubestellar/v0.23.1/hack/check_pre_req.sh | bash -s -- -A -V kflex ocm helm kubectl docker kind
+echo -e "Checking that pre-req softwares are installed..."
+
+curl -s https://raw.githubusercontent.com/kubestellar/kubestellar/v${KUBESTELLAR_VERSION}/hack/check_pre_req.sh | bash -s -- -V kflex ocm helm kubectl docker kind
+
+output=$(curl -s https://raw.githubusercontent.com/kubestellar/kubestellar/v${KUBESTELLAR_VERSION}/hack/check_pre_req.sh | bash -s -- -A -V kflex ocm helm kubectl docker kind
 )
 
 echo -e "\nStarting environment clean up..."
@@ -74,7 +78,6 @@ context_clean_up
 echo "Context space clean up completed"
 
 echo -e "\nStarting the process to install KubeStellar core: kind-kubeflex..."
-export KUBESTELLAR_VERSION=0.23.1
 
 curl -s https://raw.githubusercontent.com/kubestellar/kubestellar/v${KUBESTELLAR_VERSION}/scripts/create-kind-cluster-with-SSL-passthrough.sh | bash -s -- --name kubeflex --port 9443
 
